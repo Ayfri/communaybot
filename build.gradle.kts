@@ -20,6 +20,10 @@ repositories {
     }
 }
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(10, "minutes")
+    resolutionStrategy.cacheDynamicVersionsFor(10, "minutes")
+}
 
 dependencies {
     implementation("com.kotlindiscord.kord.extensions:kord-extensions:$kordexVersion")
