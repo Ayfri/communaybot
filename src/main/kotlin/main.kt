@@ -6,14 +6,20 @@ import dev.kord.common.entity.PresenceStatus
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import extensions.Information
+import kotlin.time.minutes
 
 lateinit var bot: ExtensibleBot;
 
-@OptIn(PrivilegedIntent::class)
+@OptIn(PrivilegedIntent::class, kotlin.time.ExperimentalTime::class)
 suspend fun main() {
 	bot = ExtensibleBot(env("TOKEN")!!) {
 		extensions {
 			sentry = false
+			
+			help {
+				deletePaginatorOnTimeout = true
+				paginatorTimeout = 5.minutes.toLongMilliseconds()
+			}
 			add(::Information)
 		}
 		
@@ -24,6 +30,11 @@ suspend fun main() {
 		i18n {
 			defaultLocale = SupportedLocales.ENGLISH
 			localeResolver { _, _, _ -> SupportedLocales.FRENCH }
+		}
+		
+		members {
+			fillPresences = true
+			all()
 		}
 		
 		presence {
