@@ -1,9 +1,11 @@
+
 import com.kotlindiscord.kord.extensions.ExtensibleBot
+import com.kotlindiscord.kord.extensions.i18n.SupportedLocales
 import com.kotlindiscord.kord.extensions.utils.env
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
-import java.util.*
+import extensions.Information
 
 lateinit var bot: ExtensibleBot;
 
@@ -11,7 +13,8 @@ lateinit var bot: ExtensibleBot;
 suspend fun main() {
 	bot = ExtensibleBot(env("TOKEN")!!) {
 		extensions {
-			help = true
+			sentry = false
+			add(::Information)
 		}
 		
 		intents {
@@ -19,7 +22,8 @@ suspend fun main() {
 		}
 		
 		i18n {
-			defaultLocale = Locale.FRENCH
+			defaultLocale = SupportedLocales.ENGLISH
+			localeResolver { _, _, _ -> SupportedLocales.FRENCH }
 		}
 		
 		presence {
