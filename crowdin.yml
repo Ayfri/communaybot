@@ -1,3 +1,3 @@
 files:
-  - source: '**/translations/communaybot/strings*.properties'
+  - source: '**/translations/communaybot/strings.properties'
     translation: '%original_path%/strings_%two_letters_code%.%file_extension%'
