@@ -1,4 +1,3 @@
-
 import com.kotlindiscord.kord.extensions.ExtensibleBot
 import com.kotlindiscord.kord.extensions.i18n.SupportedLocales
 import com.kotlindiscord.kord.extensions.utils.env
@@ -7,6 +6,7 @@ import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import extensions.Information
 import extensions.Links
+import extensions.MembersFlow
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -24,6 +24,7 @@ suspend fun main() {
 			}
 			add(::Links)
 			add(::Information)
+			add(::MembersFlow)
 		}
 		
 		intents {
@@ -42,7 +43,7 @@ suspend fun main() {
 		
 		slashCommands {
 			enabled = true
-			defaultGuild = id
+			defaultGuild = communAyfriID
 		}
 		
 		presence {

@@ -3,11 +3,11 @@ package extensions
 import adChannelID
 import com.kotlindiscord.kord.extensions.checks.inGuild
 import com.kotlindiscord.kord.extensions.extensions.Extension
+import communAyfriID
 import dev.kord.common.entity.ChannelType
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.behavior.reply
 import dev.kord.core.entity.channel.TextChannel
-import id
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import utils.completeEmbed
@@ -22,7 +22,7 @@ class Information : Extension() {
 			name = "extensions.informations.guild-info.name"
 			description = "extensions.informations.guild-info.description"
 			aliasKey = "extensions.informations.guild-info.aliases"
-			check(inGuild(id))
+			check(inGuild(communAyfriID))
 			
 			action {
 				message.reply {
@@ -87,7 +87,7 @@ class Information : Extension() {
 			name = "extensions.informations.ad.name"
 			description = "extensions.informations.ad.description"
 			aliasKey = "extensions.informations.ad.aliases"
-			check(inGuild(id))
+			check(inGuild(communAyfriID))
 			
 			action {
 				val adChannel = guild!!.channels.first { it.id == adChannelID } as TextChannel
@@ -115,7 +115,7 @@ class Information : Extension() {
 		command {
 			name = "test"
 			description = "test"
-			check(inGuild(id), isOwner())
+			check(inGuild(communAyfriID), isOwner())
 			
 			action {
 			
