@@ -1,11 +1,14 @@
 package extensions
 
+import adChannelID
 import com.kotlindiscord.kord.extensions.checks.inGuild
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import dev.kord.common.entity.ChannelType
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.behavior.reply
+import dev.kord.core.entity.channel.TextChannel
 import id
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import utils.completeEmbed
 
@@ -75,6 +78,22 @@ class Information : Extension() {
 							inline = true
 						}
 					}
+				}
+			}
+		}
+		
+		command {
+			name = "extensions.informations.ad.name"
+			description = "extensions.informations.ad.description"
+			aliasKey = "extensions.informations.ad.aliases"
+			check(inGuild(id))
+			
+			action {
+				val adChannel = guild!!.channels.first { it.id == adChannelID } as TextChannel
+				val ad = adChannel.messages.toList().minByOrNull { it.timestamp }!!
+				
+				message.reply {
+					content = ad.content
 				}
 			}
 		}
