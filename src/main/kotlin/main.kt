@@ -6,11 +6,13 @@ import dev.kord.common.entity.PresenceStatus
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
 import extensions.Information
-import kotlin.time.minutes
+import extensions.Links
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
-lateinit var bot: ExtensibleBot;
+lateinit var bot: ExtensibleBot
 
-@OptIn(PrivilegedIntent::class, kotlin.time.ExperimentalTime::class)
+@OptIn(PrivilegedIntent::class, ExperimentalTime::class)
 suspend fun main() {
 	bot = ExtensibleBot(env("TOKEN")!!) {
 		extensions {
@@ -18,8 +20,9 @@ suspend fun main() {
 			
 			help {
 				deletePaginatorOnTimeout = true
-				paginatorTimeout = 5.minutes.toLongMilliseconds()
+				paginatorTimeout = Duration.minutes(5).inWholeMilliseconds
 			}
+			add(::Links)
 			add(::Information)
 		}
 		
@@ -35,6 +38,11 @@ suspend fun main() {
 		members {
 			fillPresences = true
 			all()
+		}
+		
+		slashCommands {
+			enabled = true
+			defaultGuild = id
 		}
 		
 		presence {

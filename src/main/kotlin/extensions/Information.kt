@@ -2,11 +2,11 @@ package extensions
 
 import com.kotlindiscord.kord.extensions.checks.inGuild
 import com.kotlindiscord.kord.extensions.extensions.Extension
+import dev.kord.common.entity.ChannelType
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.core.behavior.reply
 import id
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.toList
 import utils.completeEmbed
 
 class Information : Extension() {
@@ -23,20 +23,56 @@ class Information : Extension() {
 			action {
 				message.reply {
 					embed {
-						completeEmbed(bot, this@action.translate("extensions.informations.guild-info.embed.title"), "")()
-						val members = guild!!.members
-						val bots = members.filter { it.isBot }
-						val online = members.filter { it.getPresence().status == PresenceStatus.Online }
-						val idle = members.filter { it.getPresence().status == PresenceStatus.Idle }
-						val dnd = members.filter { it.getPresence().status == PresenceStatus.DoNotDisturb }
-						val offline = members.filter { it.getPresence().status == PresenceStatus.Offline }
+						completeEmbed(bot, translate("extensions.informations.guild-info.embed.title"), "")()
+						val members = guild!!.members.toList()
+						val channels = guild!!.channels.toList()
 						
 						field {
-							name = this@action.translate("extensions.informations.guild-info.embed.fields.members.title")
-							value = this@action.translate(
+							name = translate("extensions.informations.guild-info.embed.fields.owner.title")
+							value = "${guild!!.owner.mention} (`${guild!!.ownerId.asString}`)"
+							inline = true
+						}
+						
+						val membersPresences = members.filterNot { it.isBot }.groupBy { it.getPresenceOrNull()?.status }
+						
+						val bots = members.filter { it.isBot }
+						val online = membersPresences[PresenceStatus.Online]
+						val idle = membersPresences[PresenceStatus.Idle]
+						val dnd = membersPresences[PresenceStatus.DoNotDisturb]
+						val invisible = membersPresences[PresenceStatus.Invisible]
+						val offline = membersPresences[null]!!.toMutableList()
+						offline.addAll(invisible ?: emptyList())
+						
+						field {
+							name = translate("extensions.informations.guild-info.embed.fields.members.title")
+							value = translate(
 								"extensions.informations.guild-info.embed.fields.members.value",
-								arrayOf(members, online, idle, dnd, offline, bots).map { it.count() }.toTypedArray()
+								arrayOf(members, online, idle, dnd, offline, bots).map { it?.size ?: 0 }.toTypedArray()
 							)
+							inline = true
+						}
+						
+						val channelsTypes = channels.groupBy { it.type }
+						
+						val textual = channelsTypes[ChannelType.GuildText]
+						val vocals = channelsTypes[ChannelType.GuildVoice]
+						val categories = channelsTypes[ChannelType.GuildCategory]
+						val announces = channelsTypes[ChannelType.GuildNews]
+						val stages = channelsTypes[ChannelType.GuildStageVoice]
+						
+						field {
+							name = translate("extensions.informations.guild-info.embed.fields.channels.title")
+							value = translate(
+								"extensions.informations.guild-info.embed.fields.channels.value",
+								arrayOf(channels, textual, vocals, categories, announces, stages).map { it?.size ?: 0 }.toTypedArray()
+							)
+							inline = true
+						}
+						
+						field {
+							name = translate("extensions.informations.guild-info.embed.fields.roles.title")
+							value = guild!!.roles.toList().sortedBy { it.rawPosition }.filterNot { it.managed }.asReversed().joinToString("\n") { it.mention }
+							inline = true
 						}
 					}
 				}
