@@ -11,6 +11,7 @@ import id
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import utils.completeEmbed
+import utils.isOwner
 
 class Information : Extension() {
 	override val bundle = "communaybot"
@@ -95,6 +96,29 @@ class Information : Extension() {
 				message.reply {
 					content = ad.content
 				}
+			}
+		}
+		
+		command {
+			name = "Ayfri"
+			description = "extensions.informations.ayfri.description"
+		
+			action {
+				message.reply {
+					embed {
+						completeEmbed(bot, "Ayfri", translate("extensions.informations.ayfri.embed.description"))()
+					}
+				}
+			}
+		}
+		
+		command {
+			name = "test"
+			description = "test"
+			check(inGuild(id), isOwner())
+			
+			action {
+			
 			}
 		}
 	}
