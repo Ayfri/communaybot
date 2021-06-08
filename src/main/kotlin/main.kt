@@ -48,7 +48,7 @@ suspend fun main() {
 		presence {
 			status = PresenceStatus.Online
 			
-			playing("!help")
+			streaming("looking Ayfri's stream", "https://twitch.tv/Ayfri1015")
 		}
 	}
 	
