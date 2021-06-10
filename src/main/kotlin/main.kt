@@ -4,6 +4,7 @@ import com.kotlindiscord.kord.extensions.utils.env
 import dev.kord.common.entity.PresenceStatus
 import dev.kord.gateway.Intents
 import dev.kord.gateway.PrivilegedIntent
+import extensions.EasterEggs
 import extensions.Information
 import extensions.Links
 import extensions.MembersFlow
@@ -22,10 +23,16 @@ suspend fun main() {
 				deletePaginatorOnTimeout = true
 				paginatorTimeout = Duration.minutes(5).inWholeMilliseconds
 			}
-			add(::Links)
+			add(::EasterEggs)
 			add(::Information)
+			add(::Links)
 			add(::MembersFlow)
 		}
+		/*hooks {
+			extensionAdded { ex ->
+				println(ex.commands.map { it.name })
+			}
+		}*/
 		
 		intents {
 			+Intents.all
