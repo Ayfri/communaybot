@@ -26,8 +26,7 @@ class Information : Extension() {
 			
 			action {
 				message.reply {
-					embed {
-						completeEmbed(bot, translate("extensions.informations.guild-info.embed.title"), "")()
+					completeEmbed(translate("extensions.informations.guild-info.embed.title")) {
 						val members = guild!!.members.toList()
 						val channels = guild!!.channels.toList()
 						
@@ -102,12 +101,10 @@ class Information : Extension() {
 		command {
 			name = "Ayfri"
 			description = "extensions.informations.ayfri.description"
-		
+			
 			action {
 				message.reply {
-					embed {
-						completeEmbed(bot, "Ayfri", translate("extensions.informations.ayfri.embed.description"))()
-					}
+					completeEmbed("Ayfri", translate("extensions.informations.ayfri.embed.description")) {}
 				}
 			}
 		}
